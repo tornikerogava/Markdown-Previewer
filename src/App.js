@@ -1,13 +1,16 @@
 import './App.css';
 import { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import gfm from 'remark-gfm';
-import {  MarkdownPreview  } from "react-marked-markdown";
+import Prism from "prismjs";
+import "prismjs/themes/prism-tomorrow.css";
 
+let marked = require("marked");
 
 export default function App() {
   
-
+  const renderer = new marked.Renderer();
+  renderer.link = function (href, title, text) {
+    return `<a target="_blank" href="${href}">${text}</a>`;
+  };
   const InitialText= `# Welcome to my React Markdown Previewer!
 
   ## This is a sub-heading...
@@ -53,22 +56,18 @@ export default function App() {
   ![freeCodeCamp Logo](https://cdn.freecodecamp.org/testable-projects-fcc/images/fcc_secondary.svg)
   `;
   const [markdown, setMarkdown] = useState(InitialText);
+  
 
   return (
     <div className="markdown__container">
-      <textarea id="preview"xtarea value={markdown} onChange={(i) => setMarkdown(i.target.value)} id="editor" />
+      <textarea value={markdown} onChange={(i) => setMarkdown(i.target.value)} id="editor" />
 
-      <div id="preview">
-        <MarkdownPreview  markedOptions={{
-    gfm: true,
-    tables: true,
-    breaks: true,
-    pedantic: false,
-    sanitize: true,
-    smartLists: true,
-    smartypants: false
-   }}  value={markdown} className="markdown__preview" />
-      </div>
+      
+      <div id="preview" className="markdown__preview"
+        dangerouslySetInnerHTML={{ __html: marked(markdown,{breaks:true, highlight: function (code) {
+        return Prism.highlight(code, Prism.languages.javascript, 'javascript',);
+      } }), renderer: renderer }} />
+        
     </div>
   );
 }
