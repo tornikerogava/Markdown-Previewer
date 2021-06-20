@@ -63,7 +63,7 @@ export default function App() {
       <textarea value={markdown} onChange={(i) => setMarkdown(i.target.value)} id="editor" />
 
       
-      <div id="preview" className="markdown__preview"
+      <div id="preview" 
         dangerouslySetInnerHTML={{ __html: marked(markdown,{breaks:true, highlight: function (code) {
         return Prism.highlight(code, Prism.languages.javascript, 'javascript',);
       } }), renderer: renderer }} />
