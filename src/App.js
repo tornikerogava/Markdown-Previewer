@@ -2,6 +2,7 @@ import './App.css';
 import { useState } from 'react';
 import Prism from "prismjs";
 import "prismjs/themes/prism-tomorrow.css";
+import MDlogo from "./Images/Markdown-mark.svg"
 
 let marked = require("marked");
 
@@ -59,10 +60,16 @@ export default function App() {
   
 
   return (
-    <div className="markdown__container">
+    <div className="markdownContainer">
+     <div className="editorContainer">
+      <div className="editorTitleContainer">
+        <img src={MDlogo}/>
+        
+          <h1 className="editorTitle">Editor</h1>
+        
+      </div>
       <textarea value={markdown} onChange={(i) => setMarkdown(i.target.value)} id="editor" />
-
-      
+     </div>
       <div id="preview" 
         dangerouslySetInnerHTML={{ __html: marked(markdown,{breaks:true, highlight: function (code) {
         return Prism.highlight(code, Prism.languages.javascript, 'javascript',);
